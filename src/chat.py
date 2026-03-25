@@ -1,4 +1,17 @@
 from langchain_core.prompts import PromptTemplate
+from langchain_postgres import PGVector
+from langchain_openai import OpenAIEmbeddings
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+
+question_user = input("Pergunte alguma coisa: ")
+while not question_user.strip():
+    print("A pergunta não pode ser vazia. Por favor.")
+    question_user = input("Pergunte alguma coisa: ")
 
 
 t="""
@@ -28,12 +41,28 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO
 """
 
+embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_MODEL","text-embedding-3-small"))
+
+doc_parts_store = PGVector(
+    embeddings=embeddings,
+    collection_name=os.getenv("PGVECTOR_COLLECTION"),
+    connection=os.getenv("PGVECTOR_URL"),
+    use_jsonb=True
+)
+
+doc_parts = doc_parts_store.similarity_search(question_user, k=2)
+
+context = ""
+
+for i, (doc_part, score) in enumerate(doc_parts):
+    context += f"Documento {i+1}, (similaridade: {score:.4f}):\n{doc_part}\n{'-'*80}\n"
+
 template = PromptTemplate(
     input_variables=["context", "question_user"],
     template=t
 )
 
 text = template.format(
-    context=f"{'='*70}\nO chunk recuperado na busca por similaridade na base vetorial vai aqui\n{'='*70}", 
-    question_user=f"{'='*70}\nA pergunta do usuário vai aqui\n{'='*70}")
+    context=context, 
+    question_user=question_user)
 print(text)
