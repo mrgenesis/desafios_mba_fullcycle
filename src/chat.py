@@ -50,12 +50,12 @@ doc_parts_store = PGVector(
     use_jsonb=True
 )
 
-doc_parts = doc_parts_store.similarity_search(question_user, k=2)
+doc_parts = doc_parts_store.similarity_search_with_score(question_user, k=2)
 
 context = ""
 
-for i, (doc_part, score) in enumerate(doc_parts):
-    context += f"Documento {i+1}, (similaridade: {score:.4f}):\n{doc_part}\n{'-'*80}\n"
+for i, (doc_part, score) in enumerate(doc_parts, start=1):
+    context += f"Documento {i}, (similaridade: {score:.4f}):\n{doc_part.page_content.strip()}\n{'-'*80}\n"
 
 template = PromptTemplate(
     input_variables=["context", "question_user"],
