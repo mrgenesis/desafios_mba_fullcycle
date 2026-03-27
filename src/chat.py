@@ -1,6 +1,6 @@
 from langchain_core.prompts import PromptTemplate
 from langchain_postgres import PGVector
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 import os
 from dotenv import load_dotenv
 
@@ -41,7 +41,7 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO
 """
 
-embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_MODEL","text-embedding-3-small"))
+embeddings = OpenAIEmbeddings(model=os.getenv("EMBEDDING_MODEL","text-embedding-3-small"))
 
 doc_parts_store = PGVector(
     embeddings=embeddings,
@@ -54,7 +54,7 @@ doc_parts = doc_parts_store.similarity_search_with_score(question_user, k=2)
 
 context = ""
 
-for i, (doc_part, score) in enumerate(doc_parts, start=1):
+for i, (doc_part, score) in enumerate(doc_parts, start=10):
     context += f"Documento {i}, (similaridade: {score:.4f}):\n{doc_part.page_content.strip()}\n{'-'*80}\n"
 
 template = PromptTemplate(
@@ -62,7 +62,9 @@ template = PromptTemplate(
     template=t
 )
 
-text = template.format(
-    context=context, 
-    question_user=question_user)
-print(text)
+llm = ChatOpenAI(model=os.getenv("MODEL_NAME","gpt-5-nano"), temperature=0.5)
+
+chain = template | llm
+
+res = chain.invoke({"context": context, "question_user": question_user})
+print(res.content)
