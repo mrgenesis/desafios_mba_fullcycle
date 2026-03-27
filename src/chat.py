@@ -1,12 +1,10 @@
 from langchain_core.prompts import PromptTemplate
-from langchain_postgres import PGVector
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-import os
+from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
+from search import get_similar_documents
+import os
 
 load_dotenv()
-
-
 
 question_user = input("Pergunte alguma coisa: ")
 while not question_user.strip():
@@ -41,20 +39,11 @@ PERGUNTA DO USUÁRIO:
 RESPONDA A "PERGUNTA DO USUÁRIO
 """
 
-embeddings = OpenAIEmbeddings(model=os.getenv("EMBEDDING_MODEL","text-embedding-3-small"))
-
-doc_parts_store = PGVector(
-    embeddings=embeddings,
-    collection_name=os.getenv("PGVECTOR_COLLECTION"),
-    connection=os.getenv("PGVECTOR_URL"),
-    use_jsonb=True
-)
-
-doc_parts = doc_parts_store.similarity_search_with_score(question_user, k=2)
+doc_parts = get_similar_documents(question_user)
 
 context = ""
 
-for i, (doc_part, score) in enumerate(doc_parts, start=10):
+for i, (doc_part, score) in enumerate(doc_parts, start=1):
     context += f"Documento {i}, (similaridade: {score:.4f}):\n{doc_part.page_content.strip()}\n{'-'*80}\n"
 
 template = PromptTemplate(
