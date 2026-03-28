@@ -4,16 +4,16 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-for k in ("OPENAI_API_KEY", "EMBEDDING_MODEL", "MODEL_NAME", "PGVECTOR_URL","PGVECTOR_COLLECTION"):
+for k in ("DATABASE_URL","PG_VECTOR_COLLECTION_NAME", "OPENAI_EMBEDDING_MODEL"):
     if not os.getenv(k):
         raise RuntimeError(f"Environment variable {k} is not set")
 
-embeddings = OpenAIEmbeddings(model=os.getenv("EMBEDDING_MODEL","text-embedding-3-small"))
+embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_EMBEDDING_MODEL"))
 
 doc_parts_store = PGVector(
     embeddings=embeddings,
-    collection_name=os.getenv("PGVECTOR_COLLECTION"),
-    connection=os.getenv("PGVECTOR_URL"),
+    collection_name=os.getenv("PG_VECTOR_COLLECTION_NAME"),
+    connection=os.getenv("DATABASE_URL"),
     use_jsonb=True
 )
 

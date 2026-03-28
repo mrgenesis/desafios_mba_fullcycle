@@ -7,16 +7,14 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
 from langchain_postgres import PGVector
+import os
 
 load_dotenv()
-for k in ("OPENAI_API_KEY", "PGVECTOR_URL","PGVECTOR_COLLECTION"):
+for k in ("OPENAI_API_KEY", "DATABASE_URL","PG_VECTOR_COLLECTION_NAME", "PDF_PATH", "MODEL_NAME", "OPENAI_EMBEDDING_MODEL"):
     if not os.getenv(k):
         raise RuntimeError(f"Environment variable {k} is not set")
 
-current_dir = Path(__file__).parent.parent
-pdf_path = current_dir / "document.pdf"
-
-docs = PyPDFLoader(str(pdf_path)).load()
+docs = PyPDFLoader(os.getenv("PDF_PATH")).load()
 
 splits = RecursiveCharacterTextSplitter(
     chunk_size=1000, 
@@ -38,12 +36,12 @@ processed_chunks = [
 
 doc_part_ids = [f"doc_part_{i + 1}" for i in range(len(processed_chunks))]
 
-embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_MODEL","text-embedding-3-small"))
+embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_EMBEDDING_MODEL"))
 
 store = PGVector(
     embeddings=embeddings,
-    collection_name=os.getenv("PGVECTOR_COLLECTION"),
-    connection=os.getenv("PGVECTOR_URL"),
+    collection_name=os.getenv("PG_VECTOR_COLLECTION_NAME"),
+    connection=os.getenv("DATABASE_URL"),
     use_jsonb=True,
 )
 

@@ -6,6 +6,10 @@ import os
 
 load_dotenv()
 
+for k in ("OPENAI_API_KEY", "MODEL_NAME"):
+    if not os.getenv(k):
+        raise RuntimeError(f"Environment variable {k} is not set")
+
 question_user = input("Pergunte alguma coisa: ")
 while not question_user.strip():
     print("A pergunta não pode ser vazia. Por favor.")
@@ -51,7 +55,7 @@ template = PromptTemplate(
     template=t
 )
 
-llm = ChatOpenAI(model=os.getenv("MODEL_NAME","gpt-5-nano"), temperature=0.5)
+llm = ChatOpenAI(model=os.getenv("MODEL_NAME"), temperature=0.5)
 
 chain = template | llm
 
