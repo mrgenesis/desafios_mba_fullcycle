@@ -25,7 +25,7 @@ bug_to_user_story_v2:
     ## Formato de saída
     O resultado deve ser padronizado da forma como mostram o abaixo, seguindo rigorosamente a estrutura apresentada, sem adicionar ou omitir seções:
 
-    ### Exemplo
+    ### Exemplos
 
     #### relato de bug original do usuário:
 
@@ -80,7 +80,7 @@ bug_to_user_story_v2:
   techniques_applied:
     - técnica 1
     - técnica 2
-    - Obs -> estudar o que seria isso
+    #- Obs -> estudar o que seria isso
   version: v2
   created_at: '2025-01-15'
   tags:
