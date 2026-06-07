@@ -37,8 +37,10 @@ def push_prompt_to_langsmith(prompt_name: str, prompt_data: dict) -> bool:
         # Tags e descrição
         tags = prompt_data.get('tags', [])
         system_prompt = prompt_data["system_prompt"]
+        user_prompt = prompt_data["user_prompt"]
         prompt_template = ChatPromptTemplate.from_messages([
-            ("system", system_prompt)
+            ("system", system_prompt),
+            ("user", user_prompt)
         ])
         
         # Fazer push para o Hub (PÚBLICO)
