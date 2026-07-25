@@ -177,8 +177,6 @@ Os blocos de código dos padrões usavam identificadores de linguagem específic
 
 ## Resultados
 
-> _Preencher após executar a skill nos 3 projetos._
-
 ### Artefatos gerados por projeto
 
 A Fase 3 gera dois arquivos em `reports/` além do relatório de auditoria da Fase 2:
@@ -187,111 +185,314 @@ A Fase 3 gera dois arquivos em `reports/` além do relatório de auditoria da Fa
 |---|---|---|
 | `reports/audit-<projeto>.md` | 2 | Relatório de auditoria com todos os findings |
 | `reports/validation-matrix-<projeto>.md` | 3 | Matriz com critério de aprovação por fixture, gerada antes da refatoração |
+| `reports/fixtures-<projeto>.sh` | 3 | Script com as requisições fixas usadas para capturar baseline e validar |
+| `reports/baseline-<projeto>.txt` | 3 | Respostas da aplicação original (antes de qualquer alteração) |
+| `reports/post-refactor-<projeto>.txt` | 3 | Respostas da aplicação refatorada, comparadas à Matriz de Validação |
 
 ### Resumo dos relatórios de auditoria
 
 | Projeto              | CRITICAL | HIGH | MEDIUM | LOW | Total |
 | -------------------- | -------- | ---- | ------ | --- | ----- |
-| code-smells-project  | —        | —    | —      | —   | —     |
-| ecommerce-api-legacy | —        | —    | —      | —   | —     |
-| task-manager-api     | —        | —    | —      | —   | —     |
+| code-smells-project  | 4        | 2    | 3      | 2   | 11    |
+| ecommerce-api-legacy | 3        | 3    | 3      | 2   | 11    |
+| task-manager-api     | 2        | 2    | 4      | 2   | 10    |
 
 ### Estrutura antes/depois
 
-<!-- Mostrar árvore de diretórios antes e depois da refatoração para cada projeto. -->
+#### Projeto 1 — code-smells-project
+
+Antes:
+```
+code-smells-project/
+├── app.py
+├── controllers.py
+├── database.py
+├── models.py
+├── README.md
+└── requirements.txt
+```
+
+Depois:
+```
+code-smells-project/
+├── app.py
+├── config/
+│   ├── constants.py
+│   ├── database.py
+│   └── settings.py
+├── controllers/
+│   ├── pedido_controller.py
+│   ├── produto_controller.py
+│   ├── relatorio_controller.py
+│   └── usuario_controller.py
+├── middlewares/
+│   ├── auth.py
+│   └── errors.py
+├── models/
+│   ├── pedido_model.py
+│   ├── produto_model.py
+│   ├── relatorio_model.py
+│   └── usuario_model.py
+├── routes/
+│   ├── admin_routes.py
+│   ├── health_routes.py
+│   ├── index_routes.py
+│   ├── pedido_routes.py
+│   ├── produto_routes.py
+│   ├── relatorio_routes.py
+│   └── usuario_routes.py
+├── reports/
+│   └── (audit, baseline, fixtures, post-refactor, validation-matrix)
+├── seed.py
+├── README.md
+└── requirements.txt
+```
+
+#### Projeto 2 — ecommerce-api-legacy
+
+Antes:
+```
+ecommerce-api-legacy/
+├── api.http
+├── package.json
+├── package-lock.json
+├── README.md
+└── src/
+    ├── app.js
+    ├── AppManager.js
+    └── utils.js
+```
+
+Depois:
+```
+ecommerce-api-legacy/
+├── api.http
+├── package.json
+├── package-lock.json
+├── README.md
+├── reports/
+│   └── (audit, baseline, fixtures, post-refactor, validation-matrix)
+└── src/
+    ├── app.js
+    ├── config/
+    │   ├── database.js
+    │   └── settings.js
+    ├── controllers/
+    │   ├── checkoutController.js
+    │   ├── financialReportController.js
+    │   └── userController.js
+    ├── middlewares/
+    │   └── errorHandler.js
+    ├── models/
+    │   ├── auditLogModel.js
+    │   ├── courseModel.js
+    │   ├── enrollmentModel.js
+    │   ├── paymentModel.js
+    │   ├── reportModel.js
+    │   └── userModel.js
+    └── routes/
+        ├── checkoutRoutes.js
+        ├── financialReportRoutes.js
+        └── userRoutes.js
+```
+
+#### Projeto 3 — task-manager-api
+
+Antes:
+```
+task-manager-api/
+├── app.py
+├── database.py
+├── seed.py
+├── README.md
+├── requirements.txt
+├── models/
+│   ├── __init__.py
+│   ├── category.py
+│   ├── task.py
+│   └── user.py
+├── routes/
+│   ├── __init__.py
+│   ├── report_routes.py
+│   ├── task_routes.py
+│   └── user_routes.py
+├── services/
+│   ├── __init__.py
+│   └── notification_service.py
+└── utils/
+    ├── __init__.py
+    └── helpers.py
+```
+
+Depois:
+```
+task-manager-api/
+├── app.py
+├── database.py
+├── seed.py
+├── README.md
+├── requirements.txt
+├── config/
+│   └── settings.py
+├── controllers/
+│   ├── category_controller.py
+│   ├── report_controller.py
+│   ├── task_controller.py
+│   └── user_controller.py
+├── middlewares/
+│   └── errors.py
+├── models/
+│   ├── __init__.py
+│   ├── category.py
+│   ├── task.py
+│   └── user.py
+├── routes/
+│   ├── __init__.py
+│   ├── report_routes.py
+│   ├── task_routes.py
+│   └── user_routes.py
+├── reports/
+│   └── (audit, baseline, fixtures, post-refactor, validation-matrix)
+└── utils/
+    └── helpers.py
+```
+`services/` foi removido (NotificationService nunca era importado por nenhuma rota).
 
 ### Checklist de validação
 
 #### Projeto 1 — code-smells-project
 
 **Fase 1 — Análise**
-- [ ] Linguagem detectada corretamente (Python)
-- [ ] Framework detectado corretamente (Flask)
-- [ ] Domínio da aplicação descrito corretamente (E-commerce API)
-- [ ] Número de arquivos analisados condiz com a realidade (4 arquivos)
+- [x] Linguagem detectada corretamente (Python)
+- [x] Framework detectado corretamente (Flask 3.1.1)
+- [x] Domínio da aplicação descrito corretamente (E-commerce API)
+- [x] Número de arquivos analisados condiz com a realidade (4 arquivos)
 
 **Fase 2 — Auditoria**
-- [ ] Relatório segue o template definido nos arquivos de referência
-- [ ] Cada finding tem arquivo e linhas exatos
-- [ ] Findings ordenados por severidade (CRITICAL → LOW)
-- [ ] Mínimo de 5 findings identificados
-- [ ] Detecção de APIs deprecated incluída (Flask)
-- [ ] Skill pausa e pede confirmação antes da Fase 3
+- [x] Relatório segue o template definido nos arquivos de referência
+- [x] Cada finding tem arquivo e linhas exatos
+- [x] Findings ordenados por severidade (CRITICAL → LOW)
+- [x] Mínimo de 5 findings identificados (11 findings)
+- [x] Detecção de APIs deprecated incluída (Flask — nenhuma encontrada)
+- [x] Skill pausa e pede confirmação antes da Fase 3
 
 **Fase 3 — Refatoração**
-- [ ] Seed com IDs fixos gerado e aplicado (TRUNCATE + INSERT explícito)
-- [ ] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-code-smells-project.md`)
-- [ ] Estrutura de diretórios segue padrão MVC
-- [ ] Configuração extraída para módulo de config (sem hardcoded)
-- [ ] Models criados para abstrair dados
-- [ ] Views/Routes separadas para roteamento
-- [ ] Controllers concentram o fluxo da aplicação
-- [ ] Error handling centralizado
-- [ ] Entry point claro
-- [ ] Aplicação inicia sem erros
-- [ ] Endpoints validados linha a linha contra a Matriz de Validação
+- [x] Seed com IDs fixos gerado e aplicado (`seed.py`: DELETE + INSERT com IDs explícitos)
+- [x] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-code-smells-project.md`)
+- [x] Estrutura de diretórios segue padrão MVC
+- [x] Configuração extraída para módulo de config (sem hardcoded)
+- [x] Models criados para abstrair dados
+- [x] Views/Routes separadas para roteamento
+- [x] Controllers concentram o fluxo da aplicação
+- [x] Error handling centralizado (`middlewares/errors.py`)
+- [x] Entry point claro
+- [x] Aplicação inicia sem erros
+- [x] Endpoints validados linha a linha contra a Matriz de Validação (23 fixtures — 1 divergência real encontrada e corrigida: `/admin/query` retornava 500 em vez de 404 até o error handler parar de capturar `HTTPException`)
 
 #### Projeto 2 — ecommerce-api-legacy
 
 **Fase 1 — Análise**
-- [ ] Linguagem detectada corretamente (Node.js)
-- [ ] Framework detectado corretamente (Express)
-- [ ] Domínio da aplicação descrito corretamente (LMS API)
-- [ ] Número de arquivos analisados condiz com a realidade (3 arquivos)
+- [x] Linguagem detectada corretamente (Node.js)
+- [x] Framework detectado corretamente (Express 4.18.2)
+- [x] Domínio da aplicação descrito corretamente (LMS API)
+- [x] Número de arquivos analisados condiz com a realidade (3 arquivos)
 
 **Fase 2 — Auditoria**
-- [ ] Relatório segue o template definido nos arquivos de referência
-- [ ] Cada finding tem arquivo e linhas exatos
-- [ ] Findings ordenados por severidade (CRITICAL → LOW)
-- [ ] Mínimo de 5 findings identificados
-- [ ] Detecção de APIs deprecated incluída (Express/Node.js)
-- [ ] Skill pausa e pede confirmação antes da Fase 3
+- [x] Relatório segue o template definido nos arquivos de referência
+- [x] Cada finding tem arquivo e linhas exatos
+- [x] Findings ordenados por severidade (CRITICAL → LOW)
+- [x] Mínimo de 5 findings identificados (11 findings)
+- [x] Detecção de APIs deprecated incluída (Express — nenhuma encontrada)
+- [x] Skill pausa e pede confirmação antes da Fase 3
 
 **Fase 3 — Refatoração**
-- [ ] Seed com IDs fixos gerado e aplicado (TRUNCATE + INSERT explícito)
-- [ ] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-ecommerce-api-legacy.md`)
-- [ ] Estrutura de diretórios segue padrão MVC
-- [ ] Configuração extraída para módulo de config (sem hardcoded)
-- [ ] Models criados para abstrair dados
-- [ ] Views/Routes separadas para roteamento
-- [ ] Controllers concentram o fluxo da aplicação
-- [ ] Error handling centralizado
-- [ ] Entry point claro
-- [ ] Aplicação inicia sem erros
-- [ ] Endpoints validados linha a linha contra a Matriz de Validação
+- [x] Seed com IDs fixos gerado e aplicado (banco SQLite em memória recriado do zero a cada boot por `initDb()`, com IDs determinísticos — não foi necessário um script de seed separado)
+- [x] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-ecommerce-api-legacy.md`)
+- [x] Estrutura de diretórios segue padrão MVC
+- [x] Configuração extraída para módulo de config (sem hardcoded)
+- [x] Models criados para abstrair dados
+- [x] Views/Routes separadas para roteamento
+- [x] Controllers concentram o fluxo da aplicação
+- [x] Error handling centralizado (`middlewares/errorHandler.js`)
+- [x] Entry point claro
+- [x] Aplicação inicia sem erros
+- [x] Endpoints validados linha a linha contra a Matriz de Validação (11 linhas — 1 efeito em cascata documentado: a correção da senha obrigatória no checkout impediu a matrícula que antes preenchia o curso "Docker", refletido nas linhas 6 e 8 da matriz)
 
 #### Projeto 3 — task-manager-api
 
 **Fase 1 — Análise**
-- [ ] Linguagem detectada corretamente (Python)
-- [ ] Framework detectado corretamente (Flask)
-- [ ] Domínio da aplicação descrito corretamente (Task Manager)
-- [ ] Número de arquivos analisados condiz com a realidade
+- [x] Linguagem detectada corretamente (Python)
+- [x] Framework detectado corretamente (Flask 3.0.0)
+- [x] Domínio da aplicação descrito corretamente (Task Manager)
+- [x] Número de arquivos analisados condiz com a realidade (12 arquivos)
 
 **Fase 2 — Auditoria**
-- [ ] Relatório segue o template definido nos arquivos de referência
-- [ ] Cada finding tem arquivo e linhas exatos
-- [ ] Findings ordenados por severidade (CRITICAL → LOW)
-- [ ] Mínimo de 5 findings identificados
-- [ ] Detecção de APIs deprecated incluída (`Query.get()` do SQLAlchemy)
-- [ ] Skill pausa e pede confirmação antes da Fase 3
+- [x] Relatório segue o template definido nos arquivos de referência
+- [x] Cada finding tem arquivo e linhas exatos
+- [x] Findings ordenados por severidade (CRITICAL → LOW)
+- [x] Mínimo de 5 findings identificados (10 findings)
+- [x] Detecção de APIs deprecated incluída (`Query.get()` do SQLAlchemy)
+- [x] Skill pausa e pede confirmação antes da Fase 3
 
 **Fase 3 — Refatoração**
-- [ ] Seed com IDs fixos gerado e aplicado (TRUNCATE + INSERT explícito)
-- [ ] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-task-manager-api.md`)
-- [ ] Estrutura de diretórios segue padrão MVC
-- [ ] Configuração extraída para módulo de config (sem hardcoded)
-- [ ] Models mantidos e melhorados
-- [ ] Routes refatoradas para delegar ao Controller
-- [ ] Controllers criados para orquestrar fluxo
-- [ ] Error handling centralizado
-- [ ] Entry point claro
-- [ ] Aplicação inicia sem erros
-- [ ] Endpoints validados linha a linha contra a Matriz de Validação
+- [x] Seed com IDs fixos gerado e aplicado (`seed.py` já existente, reaproveitado sem alteração: delete-all + insert em ordem fixa)
+- [x] Matriz de Validação gerada antes da refatoração (`reports/validation-matrix-task-manager-api.md`)
+- [x] Estrutura de diretórios segue padrão MVC
+- [x] Configuração extraída para módulo de config (sem hardcoded)
+- [x] Models mantidos e melhorados
+- [x] Routes refatoradas para delegar ao Controller
+- [x] Controllers criados para orquestrar fluxo
+- [x] Error handling centralizado (`middlewares/errors.py`)
+- [x] Entry point claro
+- [x] Aplicação inicia sem erros
+- [x] Endpoints validados linha a linha contra a Matriz de Validação (19 linhas, nenhuma divergência)
 
 ### Logs / screenshots
 
-<!-- Colar saída do servidor subindo e de curl nos endpoints após cada refatoração. -->
+#### Projeto 1 — code-smells-project
+
+```
+$ venv/bin/python app.py
+ * Serving Flask app 'app'
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000
+
+$ curl -X POST http://localhost:5000/login -d '{"email":"'\'' OR '\''1'\''='\''1'\'' -- ","senha":"qualquer"}'
+HTTP 401  {"erro":"Email ou senha inválidos","sucesso":false}   # antes: HTTP 200 (bypass)
+
+$ curl -X POST http://localhost:5000/admin/query -d '{"sql":"SELECT COUNT(*) FROM produtos"}'
+HTTP 404   # antes: HTTP 200, executava o SQL do payload
+```
+Log completo em `code-smells-project/reports/post-refactor-code-smells-project.txt`.
+
+#### Projeto 2 — ecommerce-api-legacy
+
+```
+$ node src/app.js
+Frankenstein LMS rodando na porta 3000...
+
+$ curl -X POST http://localhost:3000/api/checkout -d '{"usr":"Nova Pessoa","eml":"nova@example.com","c_id":2,"card":"4111111111111111"}'
+HTTP 400  Senha é obrigatória   # antes: HTTP 200, criava usuário com senha padrão "123456"
+
+$ curl -X DELETE http://localhost:3000/api/users/1
+HTTP 200  Usuário deletado com sucesso.   # antes: "... mas as matrículas e pagamentos ficaram sujos no banco."
+```
+Log completo em `ecommerce-api-legacy/reports/post-refactor-ecommerce-api-legacy.txt`.
+
+#### Projeto 3 — task-manager-api
+
+```
+$ venv/bin/python app.py
+ * Running on http://127.0.0.1:5000
+
+$ curl http://localhost:5000/tasks/search?priority=abc
+HTTP 400  {"error":"priority inválido"}   # antes: HTTP 500, página HTML do Werkzeug Debugger
+
+$ curl http://localhost:5000/users/1
+HTTP 200  {"id":1,"name":"João Silva","email":"joao@email.com","role":"admin",...}
+# campo "password" (hash MD5) não aparece mais na resposta
+```
+Log completo em `task-manager-api/reports/post-refactor-task-manager-api.txt`.
 
 ---
 
@@ -344,17 +545,26 @@ claude "/refactor-arch"
 ### Validar que a refatoração funcionou
 
 ```bash
-# Projeto 1
+# Projeto 1 — a Fase 3 removeu o auto-seed de dados de exemplo do boot da
+# aplicação (era um efeito colateral escondido em database.py); rode
+# seed.py explicitamente para ter dados de demonstração.
+python seed.py
 python app.py &
 curl http://localhost:5000/health
 curl http://localhost:5000/produtos
 
-# Projeto 2
+# Projeto 2 — banco em memória, sempre recriado com o seed fixo no boot
 node src/app.js &
 curl http://localhost:3000/api/admin/financial-report
 
 # Projeto 3
+python seed.py
 python app.py &
 curl http://localhost:5000/health
 curl http://localhost:5000/tasks
+```
+
+Para testar `/admin/reset-db` do Projeto 1 (agora protegido por autenticação):
+```bash
+curl -X POST http://localhost:5000/admin/reset-db -H "X-Admin-Key: dev-admin-key"
 ```
