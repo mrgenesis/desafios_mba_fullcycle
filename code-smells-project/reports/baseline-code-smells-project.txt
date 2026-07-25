@@ -1,0 +1,356 @@
+### GET /health
+HTTP 200
+{
+  "ambiente": "producao",
+  "counts": {
+    "pedidos": 1,
+    "produtos": 2,
+    "usuarios": 2
+  },
+  "database": "connected",
+  "db_path": "loja.db",
+  "debug": true,
+  "secret_key": "minha-chave-super-secreta-123",
+  "status": "ok",
+  "versao": "1.0.0"
+}
+
+
+### GET /produtos
+HTTP 200
+{
+  "dados": [
+    {
+      "ativo": 1,
+      "categoria": "informatica",
+      "criado_em": "2026-01-01 00:00:00",
+      "descricao": "Descricao A",
+      "estoque": 50,
+      "id": 1,
+      "nome": "Produto Seed A",
+      "preco": 100.0
+    },
+    {
+      "ativo": 1,
+      "categoria": "moveis",
+      "criado_em": "2026-01-01 00:00:00",
+      "descricao": "Descricao B",
+      "estoque": 5,
+      "id": 2,
+      "nome": "Produto Seed B",
+      "preco": 25.5
+    }
+  ],
+  "sucesso": true
+}
+
+
+### GET /produtos/1
+HTTP 200
+{
+  "dados": {
+    "ativo": 1,
+    "categoria": "informatica",
+    "criado_em": "2026-01-01 00:00:00",
+    "descricao": "Descricao A",
+    "estoque": 50,
+    "id": 1,
+    "nome": "Produto Seed A",
+    "preco": 100.0
+  },
+  "sucesso": true
+}
+
+
+### GET /produtos/999 (not found)
+HTTP 404
+{
+  "erro": "Produto n\u00e3o encontrado",
+  "sucesso": false
+}
+
+
+### GET /produtos/busca?q=Seed
+HTTP 200
+{
+  "dados": [
+    {
+      "ativo": 1,
+      "categoria": "informatica",
+      "criado_em": "2026-01-01 00:00:00",
+      "descricao": "Descricao A",
+      "estoque": 50,
+      "id": 1,
+      "nome": "Produto Seed A",
+      "preco": 100.0
+    },
+    {
+      "ativo": 1,
+      "categoria": "moveis",
+      "criado_em": "2026-01-01 00:00:00",
+      "descricao": "Descricao B",
+      "estoque": 5,
+      "id": 2,
+      "nome": "Produto Seed B",
+      "preco": 25.5
+    }
+  ],
+  "sucesso": true,
+  "total": 2
+}
+
+
+### GET /produtos/busca?preco_min=abc (invalid numeric)
+HTTP 500
+{
+  "erro": "could not convert string to float: 'abc'"
+}
+
+
+### POST /produtos (happy path)
+HTTP 201
+{
+  "dados": {
+    "id": 3
+  },
+  "mensagem": "Produto criado",
+  "sucesso": true
+}
+
+
+### POST /produtos (missing preco)
+HTTP 400
+{
+  "erro": "Pre\u00e7o \u00e9 obrigat\u00f3rio"
+}
+
+
+### PUT /produtos/1 (update)
+HTTP 200
+{
+  "mensagem": "Produto atualizado",
+  "sucesso": true
+}
+
+
+### DELETE /produtos/2
+HTTP 200
+{
+  "mensagem": "Produto deletado",
+  "sucesso": true
+}
+
+
+### GET /usuarios
+HTTP 200
+{
+  "dados": [
+    {
+      "criado_em": "2026-01-01 00:00:00",
+      "email": "seed@example.com",
+      "id": 1,
+      "nome": "Usuario Seed",
+      "senha": "senha123",
+      "tipo": "cliente"
+    },
+    {
+      "criado_em": "2026-01-01 00:00:00",
+      "email": "admin@example.com",
+      "id": 2,
+      "nome": "Admin Seed",
+      "senha": "admin123",
+      "tipo": "admin"
+    }
+  ],
+  "sucesso": true
+}
+
+
+### GET /usuarios/1
+HTTP 200
+{
+  "dados": {
+    "criado_em": "2026-01-01 00:00:00",
+    "email": "seed@example.com",
+    "id": 1,
+    "nome": "Usuario Seed",
+    "senha": "senha123",
+    "tipo": "cliente"
+  },
+  "sucesso": true
+}
+
+
+### POST /usuarios (happy path)
+HTTP 201
+{
+  "dados": {
+    "id": 3
+  },
+  "sucesso": true
+}
+
+
+### POST /login (correto)
+HTTP 200
+{
+  "dados": {
+    "email": "seed@example.com",
+    "id": 1,
+    "nome": "Usuario Seed",
+    "tipo": "cliente"
+  },
+  "mensagem": "Login OK",
+  "sucesso": true
+}
+
+
+### POST /login (senha errada)
+HTTP 401
+{
+  "erro": "Email ou senha inv\u00e1lidos",
+  "sucesso": false
+}
+
+
+### POST /login (tentativa de SQL injection)
+HTTP 200
+{
+  "dados": {
+    "email": "seed@example.com",
+    "id": 1,
+    "nome": "Usuario Seed",
+    "tipo": "cliente"
+  },
+  "mensagem": "Login OK",
+  "sucesso": true
+}
+
+
+### POST /pedidos (happy path)
+HTTP 201
+{
+  "dados": {
+    "pedido_id": 2,
+    "total": 120.0
+  },
+  "mensagem": "Pedido criado com sucesso",
+  "sucesso": true
+}
+
+
+### GET /pedidos
+HTTP 200
+{
+  "dados": [
+    {
+      "criado_em": "2026-01-01 00:00:00",
+      "id": 1,
+      "itens": [
+        {
+          "preco_unitario": 100.0,
+          "produto_id": 1,
+          "produto_nome": "Produto Seed A Atualizado",
+          "quantidade": 1
+        }
+      ],
+      "status": "pendente",
+      "total": 100.0,
+      "usuario_id": 1
+    },
+    {
+      "criado_em": "2026-07-24 23:56:17",
+      "id": 2,
+      "itens": [
+        {
+          "preco_unitario": 120.0,
+          "produto_id": 1,
+          "produto_nome": "Produto Seed A Atualizado",
+          "quantidade": 1
+        }
+      ],
+      "status": "pendente",
+      "total": 120.0,
+      "usuario_id": 1
+    }
+  ],
+  "sucesso": true
+}
+
+
+### GET /pedidos/usuario/1
+HTTP 200
+{
+  "dados": [
+    {
+      "criado_em": "2026-01-01 00:00:00",
+      "id": 1,
+      "itens": [
+        {
+          "preco_unitario": 100.0,
+          "produto_id": 1,
+          "produto_nome": "Produto Seed A Atualizado",
+          "quantidade": 1
+        }
+      ],
+      "status": "pendente",
+      "total": 100.0,
+      "usuario_id": 1
+    },
+    {
+      "criado_em": "2026-07-24 23:56:17",
+      "id": 2,
+      "itens": [
+        {
+          "preco_unitario": 120.0,
+          "produto_id": 1,
+          "produto_nome": "Produto Seed A Atualizado",
+          "quantidade": 1
+        }
+      ],
+      "status": "pendente",
+      "total": 120.0,
+      "usuario_id": 1
+    }
+  ],
+  "sucesso": true
+}
+
+
+### PUT /pedidos/1/status
+HTTP 200
+{
+  "mensagem": "Status atualizado",
+  "sucesso": true
+}
+
+
+### GET /relatorios/vendas
+HTTP 200
+{
+  "dados": {
+    "desconto_aplicavel": 0,
+    "faturamento_bruto": 220.0,
+    "faturamento_liquido": 220.0,
+    "pedidos_aprovados": 1,
+    "pedidos_cancelados": 0,
+    "pedidos_pendentes": 1,
+    "ticket_medio": 110.0,
+    "total_pedidos": 2
+  },
+  "sucesso": true
+}
+
+
+### POST /admin/query (SQL arbitrario)
+HTTP 200
+{
+  "dados": [
+    {
+      "COUNT(*)": 2
+    }
+  ],
+  "sucesso": true
+}
+
+
