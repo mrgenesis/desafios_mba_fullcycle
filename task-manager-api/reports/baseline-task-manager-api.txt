@@ -1,0 +1,1148 @@
+### GET /users
+HTTP 200
+[
+  {
+    "active": true,
+    "created_at": "2026-07-25 00:32:27.914752",
+    "email": "joao@email.com",
+    "id": 1,
+    "name": "Jo\u00e3o Silva",
+    "role": "admin",
+    "task_count": 4
+  },
+  {
+    "active": true,
+    "created_at": "2026-07-25 00:32:27.914756",
+    "email": "maria@email.com",
+    "id": 2,
+    "name": "Maria Santos",
+    "role": "user",
+    "task_count": 3
+  },
+  {
+    "active": true,
+    "created_at": "2026-07-25 00:32:27.914757",
+    "email": "pedro@email.com",
+    "id": 3,
+    "name": "Pedro Oliveira",
+    "role": "manager",
+    "task_count": 3
+  }
+]
+
+
+### GET /users/1
+HTTP 200
+{
+  "active": true,
+  "created_at": "2026-07-25 00:32:27.914752",
+  "email": "joao@email.com",
+  "id": 1,
+  "name": "Jo\u00e3o Silva",
+  "password": "81dc9bdb52d04dc20036dbd8313ed055",
+  "role": "admin",
+  "tasks": [
+    {
+      "category_id": 1,
+      "created_at": "2026-07-25 00:32:27.972526",
+      "description": "Adicionar autentica\u00e7\u00e3o real com JWT",
+      "due_date": "2026-07-22 00:32:27.961762",
+      "id": 1,
+      "priority": 1,
+      "status": "pending",
+      "tags": [],
+      "title": "Implementar autentica\u00e7\u00e3o JWT",
+      "updated_at": "2026-07-25 00:32:27.972529",
+      "user_id": 1
+    },
+    {
+      "category_id": 4,
+      "created_at": "2026-07-25 00:32:27.972532",
+      "description": "Filtro n\u00e3o funciona com caracteres especiais",
+      "due_date": "2026-07-24 00:32:27.971176",
+      "id": 4,
+      "priority": 1,
+      "status": "pending",
+      "tags": [],
+      "title": "Corrigir bug no filtro de busca",
+      "updated_at": "2026-07-25 00:32:27.972533",
+      "user_id": 1
+    },
+    {
+      "category_id": 1,
+      "created_at": "2026-07-25 00:32:27.972534",
+      "description": "Endpoints retornam todos os registros",
+      "due_date": "2026-08-04 00:32:27.971193",
+      "id": 5,
+      "priority": 3,
+      "status": "pending",
+      "tags": [],
+      "title": "Adicionar pagina\u00e7\u00e3o na API",
+      "updated_at": "2026-07-25 00:32:27.972534",
+      "user_id": 1
+    },
+    {
+      "category_id": 1,
+      "created_at": "2026-07-25 00:32:27.972540",
+      "description": "Usar marshmallow ou pydantic",
+      "due_date": null,
+      "id": 10,
+      "priority": 3,
+      "status": "pending",
+      "tags": [
+        "improvement",
+        "validation"
+      ],
+      "title": "Melhorar valida\u00e7\u00f5es de input",
+      "updated_at": "2026-07-25 00:32:27.972540",
+      "user_id": 1
+    }
+  ]
+}
+
+
+### POST /login (correto)
+HTTP 200
+{
+  "message": "Login realizado com sucesso",
+  "token": "fake-jwt-token-1",
+  "user": {
+    "active": true,
+    "created_at": "2026-07-25 00:32:27.914752",
+    "email": "joao@email.com",
+    "id": 1,
+    "name": "Jo\u00e3o Silva",
+    "password": "81dc9bdb52d04dc20036dbd8313ed055",
+    "role": "admin"
+  }
+}
+
+
+### POST /login (senha errada)
+HTTP 401
+{
+  "error": "Credenciais inv\u00e1lidas"
+}
+
+
+### GET /users/1/tasks
+HTTP 200
+[
+  {
+    "created_at": "2026-07-25 00:32:27.972526",
+    "description": "Adicionar autentica\u00e7\u00e3o real com JWT",
+    "due_date": "2026-07-22 00:32:27.961762",
+    "id": 1,
+    "overdue": true,
+    "priority": 1,
+    "status": "pending",
+    "title": "Implementar autentica\u00e7\u00e3o JWT"
+  },
+  {
+    "created_at": "2026-07-25 00:32:27.972532",
+    "description": "Filtro n\u00e3o funciona com caracteres especiais",
+    "due_date": "2026-07-24 00:32:27.971176",
+    "id": 4,
+    "overdue": true,
+    "priority": 1,
+    "status": "pending",
+    "title": "Corrigir bug no filtro de busca"
+  },
+  {
+    "created_at": "2026-07-25 00:32:27.972534",
+    "description": "Endpoints retornam todos os registros",
+    "due_date": "2026-08-04 00:32:27.971193",
+    "id": 5,
+    "overdue": false,
+    "priority": 3,
+    "status": "pending",
+    "title": "Adicionar pagina\u00e7\u00e3o na API"
+  },
+  {
+    "created_at": "2026-07-25 00:32:27.972540",
+    "description": "Usar marshmallow ou pydantic",
+    "due_date": null,
+    "id": 10,
+    "overdue": false,
+    "priority": 3,
+    "status": "pending",
+    "title": "Melhorar valida\u00e7\u00f5es de input"
+  }
+]
+
+
+### GET /tasks
+HTTP 200
+[
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972526",
+    "description": "Adicionar autentica\u00e7\u00e3o real com JWT",
+    "due_date": "2026-07-22 00:32:27.961762",
+    "id": 1,
+    "overdue": true,
+    "priority": 1,
+    "status": "pending",
+    "tags": [],
+    "title": "Implementar autentica\u00e7\u00e3o JWT",
+    "updated_at": "2026-07-25 00:32:27.972529",
+    "user_id": 1,
+    "user_name": "Jo\u00e3o Silva"
+  },
+  {
+    "category_id": 2,
+    "category_name": "Frontend",
+    "created_at": "2026-07-25 00:32:27.972530",
+    "description": "Tela de login responsiva",
+    "due_date": "2026-07-30 00:32:27.965822",
+    "id": 2,
+    "overdue": false,
+    "priority": 2,
+    "status": "in_progress",
+    "tags": [],
+    "title": "Criar tela de login",
+    "updated_at": "2026-07-25 00:32:27.972530",
+    "user_id": 2,
+    "user_name": "Maria Santos"
+  },
+  {
+    "category_id": 3,
+    "category_name": "DevOps",
+    "created_at": "2026-07-25 00:32:27.972531",
+    "description": "Pipeline com GitHub Actions",
+    "due_date": null,
+    "id": 3,
+    "overdue": false,
+    "priority": 2,
+    "status": "done",
+    "tags": [
+      "devops",
+      "ci",
+      "github"
+    ],
+    "title": "Configurar CI/CD",
+    "updated_at": "2026-07-25 00:32:27.972532",
+    "user_id": 3,
+    "user_name": "Pedro Oliveira"
+  },
+  {
+    "category_id": 4,
+    "category_name": "Bug",
+    "created_at": "2026-07-25 00:32:27.972532",
+    "description": "Filtro n\u00e3o funciona com caracteres especiais",
+    "due_date": "2026-07-24 00:32:27.971176",
+    "id": 4,
+    "overdue": true,
+    "priority": 1,
+    "status": "pending",
+    "tags": [],
+    "title": "Corrigir bug no filtro de busca",
+    "updated_at": "2026-07-25 00:32:27.972533",
+    "user_id": 1,
+    "user_name": "Jo\u00e3o Silva"
+  },
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972534",
+    "description": "Endpoints retornam todos os registros",
+    "due_date": "2026-08-04 00:32:27.971193",
+    "id": 5,
+    "overdue": false,
+    "priority": 3,
+    "status": "pending",
+    "tags": [],
+    "title": "Adicionar pagina\u00e7\u00e3o na API",
+    "updated_at": "2026-07-25 00:32:27.972534",
+    "user_id": 1,
+    "user_name": "Jo\u00e3o Silva"
+  },
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972535",
+    "description": "Cobertura m\u00ednima de 80%",
+    "due_date": null,
+    "id": 6,
+    "overdue": false,
+    "priority": 2,
+    "status": "pending",
+    "tags": [],
+    "title": "Escrever testes unit\u00e1rios",
+    "updated_at": "2026-07-25 00:32:27.972535",
+    "user_id": 2,
+    "user_name": "Maria Santos"
+  },
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972536",
+    "description": "Gerar documenta\u00e7\u00e3o autom\u00e1tica",
+    "due_date": null,
+    "id": 7,
+    "overdue": false,
+    "priority": 4,
+    "status": "cancelled",
+    "tags": [],
+    "title": "Documentar API com Swagger",
+    "updated_at": "2026-07-25 00:32:27.972537",
+    "user_id": 3,
+    "user_name": "Pedro Oliveira"
+  },
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972537",
+    "description": "Melhorar organiza\u00e7\u00e3o dos models",
+    "due_date": null,
+    "id": 8,
+    "overdue": false,
+    "priority": 3,
+    "status": "in_progress",
+    "tags": [
+      "refactor",
+      "tech-debt"
+    ],
+    "title": "Refatorar models",
+    "updated_at": "2026-07-25 00:32:27.972538",
+    "user_id": 2,
+    "user_name": "Maria Santos"
+  },
+  {
+    "category_id": 3,
+    "category_name": "DevOps",
+    "created_at": "2026-07-25 00:32:27.972538",
+    "description": "Prometheus + Grafana",
+    "due_date": "2026-08-14 00:32:27.971204",
+    "id": 9,
+    "overdue": false,
+    "priority": 4,
+    "status": "pending",
+    "tags": [],
+    "title": "Configurar monitoramento",
+    "updated_at": "2026-07-25 00:32:27.972539",
+    "user_id": 3,
+    "user_name": "Pedro Oliveira"
+  },
+  {
+    "category_id": 1,
+    "category_name": "Backend",
+    "created_at": "2026-07-25 00:32:27.972540",
+    "description": "Usar marshmallow ou pydantic",
+    "due_date": null,
+    "id": 10,
+    "overdue": false,
+    "priority": 3,
+    "status": "pending",
+    "tags": [
+      "improvement",
+      "validation"
+    ],
+    "title": "Melhorar valida\u00e7\u00f5es de input",
+    "updated_at": "2026-07-25 00:32:27.972540",
+    "user_id": 1,
+    "user_name": "Jo\u00e3o Silva"
+  }
+]
+
+
+### GET /tasks/1
+HTTP 200
+{
+  "category_id": 1,
+  "created_at": "2026-07-25 00:32:27.972526",
+  "description": "Adicionar autentica\u00e7\u00e3o real com JWT",
+  "due_date": "2026-07-22 00:32:27.961762",
+  "id": 1,
+  "overdue": true,
+  "priority": 1,
+  "status": "pending",
+  "tags": [],
+  "title": "Implementar autentica\u00e7\u00e3o JWT",
+  "updated_at": "2026-07-25 00:32:27.972529",
+  "user_id": 1
+}
+
+
+### GET /tasks/search?q=bug
+HTTP 200
+[
+  {
+    "category_id": 4,
+    "created_at": "2026-07-25 00:32:27.972532",
+    "description": "Filtro n\u00e3o funciona com caracteres especiais",
+    "due_date": "2026-07-24 00:32:27.971176",
+    "id": 4,
+    "priority": 1,
+    "status": "pending",
+    "tags": [],
+    "title": "Corrigir bug no filtro de busca",
+    "updated_at": "2026-07-25 00:32:27.972533",
+    "user_id": 1
+  }
+]
+
+
+### GET /tasks/search?priority=abc (invalido)
+HTTP 500
+<!doctype html>
+<html lang=en>
+  <head>
+    <title>ValueError: invalid literal for int() with base 10: &#39;abc&#39;
+ // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css">
+    <link rel="shortcut icon"
+        href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script>
+      var CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "z5iq5OWZNND2i9VV4obn";
+    </script>
+  </head>
+  <body style="background-color: #fff">
+    <div class="debugger">
+<h1>ValueError</h1>
+<div class="detail">
+  <p class="errormsg">ValueError: invalid literal for int() with base 10: &#39;abc&#39;
+</p>
+</div>
+<h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+  <h3></h3>
+  <ul><li><div class="frame" id="frame-127493865676160">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1478</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>def __call__(self, environ: dict, start_response: t.Callable) -&gt; t.Any:</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;The WSGI server calls the Flask application object as the</pre>
+<pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app`, which can be</pre>
+<pre class="line before"><span class="ws">        </span>wrapped to apply middleware.</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;</pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865677024">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1458</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+<pre class="line before"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line before"><span class="ws">                </span>error = e</pre>
+<pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre>
+<pre class="line after"><span class="ws">                </span>raise</pre>
+<pre class="line after"><span class="ws">            </span>return response(environ, start_response)</pre>
+<pre class="line after"><span class="ws">        </span>finally:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865677168">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py"</cite>,
+      line <em class="line">176</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># Wrap exception handlers with cross_origin</pre>
+<pre class="line before"><span class="ws">        </span># These error handlers will still respect the behavior of the route</pre>
+<pre class="line before"><span class="ws">        </span>if options.get(&#39;intercept_exceptions&#39;, True):</pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f):</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args, **kwargs):</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app.make_response(f(*args, **kwargs)))
+<span class="ws">                    </span>                                            ^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if hasattr(app, &#39;handle_exception&#39;):</pre>
+<pre class="line after"><span class="ws">                </span>app.handle_exception = _after_request_decorator(</pre>
+<pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865677744">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1455</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)</pre>
+<pre class="line before"><span class="ws">        </span>error: BaseException | None = None</pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">                </span>error = e</pre>
+<pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865677888">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">869</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line before"><span class="ws">                </span>rv = self.dispatch_request()</pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)
+<span class="ws">            </span>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre>
+<pre class="line after"><span class="ws">        </span>rv: ft.ResponseReturnValue | HTTPException,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865678032">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py"</cite>,
+      line <em class="line">176</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># Wrap exception handlers with cross_origin</pre>
+<pre class="line before"><span class="ws">        </span># These error handlers will still respect the behavior of the route</pre>
+<pre class="line before"><span class="ws">        </span>if options.get(&#39;intercept_exceptions&#39;, True):</pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f):</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args, **kwargs):</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app.make_response(f(*args, **kwargs)))
+<span class="ws">                    </span>                                            ^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if hasattr(app, &#39;handle_exception&#39;):</pre>
+<pre class="line after"><span class="ws">                </span>app.handle_exception = _after_request_decorator(</pre>
+<pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865678176">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">867</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line current"><span class="ws">                </span>rv = self.dispatch_request()
+<span class="ws">                </span>     ^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865678320">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">852</em>,
+      in <code class="function">dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>and req.method == &#34;OPTIONS&#34;</pre>
+<pre class="line before"><span class="ws">        </span>):</pre>
+<pre class="line before"><span class="ws">            </span>return self.make_default_options_response()</pre>
+<pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint</pre>
+<pre class="line before"><span class="ws">        </span>view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]</pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def full_dispatch_request(self) -&gt; Response:</pre>
+<pre class="line after"><span class="ws">        </span>&#34;&#34;&#34;Dispatches the request and on top of that performs request</pre>
+<pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and</pre>
+<pre class="line after"><span class="ws">        </span>error handling.</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493865678464">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/task_routes.py"</cite>,
+      line <em class="line">261</em>,
+      in <code class="function">search_tasks</code></h4>
+  <div class="source "><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>if status:</pre>
+<pre class="line before"><span class="ws">        </span>tasks = tasks.filter(Task.status == status)</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>if priority:</pre>
+<pre class="line current"><span class="ws">        </span>tasks = tasks.filter(Task.priority == int(priority))
+<span class="ws">        </span>                                      ^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>if user_id:</pre>
+<pre class="line after"><span class="ws">        </span>tasks = tasks.filter(Task.user_id == int(user_id))</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>results = tasks.all()</pre></div>
+</div>
+</ul>
+  <blockquote>ValueError: invalid literal for int() with base 10: &#39;abc&#39;
+</blockquote>
+</div>
+
+<div class="plain">
+    <p>
+      This is the Copy/Paste friendly version of the traceback.
+    </p>
+    <textarea cols="50" rows="10" name="code" readonly>Traceback (most recent call last):
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1478, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1458, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py&#34;, line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py&#34;, line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/task_routes.py&#34;, line 261, in search_tasks
+    tasks = tasks.filter(Task.priority == int(priority))
+                                          ^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: &#39;abc&#39;
+</textarea>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class="nojavascript">
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.</span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        <form>
+          <p>PIN:
+            <input type=text name=pin size=14>
+            <input type=submit name=btn value="Confirm Pin">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!--
+
+Traceback (most recent call last):
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1478, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1458, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/task_routes.py", line 261, in search_tasks
+    tasks = tasks.filter(Task.priority == int(priority))
+                                          ^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'abc'
+
+
+-->
+
+
+### GET /tasks/stats
+HTTP 200
+{
+  "cancelled": 1,
+  "completion_rate": 10.0,
+  "done": 1,
+  "in_progress": 2,
+  "overdue": 2,
+  "pending": 6,
+  "total": 10
+}
+
+
+### GET /reports/summary
+HTTP 200
+{
+  "generated_at": "2026-07-25 00:32:53.555464",
+  "overdue": {
+    "count": 2,
+    "tasks": [
+      {
+        "days_overdue": 3,
+        "due_date": "2026-07-22 00:32:27.961762",
+        "id": 1,
+        "title": "Implementar autentica\u00e7\u00e3o JWT"
+      },
+      {
+        "days_overdue": 1,
+        "due_date": "2026-07-24 00:32:27.971176",
+        "id": 4,
+        "title": "Corrigir bug no filtro de busca"
+      }
+    ]
+  },
+  "overview": {
+    "total_categories": 4,
+    "total_tasks": 10,
+    "total_users": 3
+  },
+  "recent_activity": {
+    "tasks_completed_last_7_days": 1,
+    "tasks_created_last_7_days": 10
+  },
+  "tasks_by_priority": {
+    "critical": 2,
+    "high": 3,
+    "low": 2,
+    "medium": 3,
+    "minimal": 0
+  },
+  "tasks_by_status": {
+    "cancelled": 1,
+    "done": 1,
+    "in_progress": 2,
+    "pending": 6
+  },
+  "user_productivity": [
+    {
+      "completed_tasks": 0,
+      "completion_rate": 0.0,
+      "total_tasks": 4,
+      "user_id": 1,
+      "user_name": "Jo\u00e3o Silva"
+    },
+    {
+      "completed_tasks": 0,
+      "completion_rate": 0.0,
+      "total_tasks": 3,
+      "user_id": 2,
+      "user_name": "Maria Santos"
+    },
+    {
+      "completed_tasks": 1,
+      "completion_rate": 33.33,
+      "total_tasks": 3,
+      "user_id": 3,
+      "user_name": "Pedro Oliveira"
+    }
+  ]
+}
+
+
+### GET /reports/user/1
+HTTP 200
+{
+  "statistics": {
+    "cancelled": 0,
+    "completion_rate": 0.0,
+    "done": 0,
+    "high_priority": 2,
+    "in_progress": 0,
+    "overdue": 2,
+    "pending": 4,
+    "total_tasks": 4
+  },
+  "user": {
+    "email": "joao@email.com",
+    "id": 1,
+    "name": "Jo\u00e3o Silva"
+  }
+}
+
+
+### GET /categories
+HTTP 200
+[
+  {
+    "color": "#3498db",
+    "created_at": "2026-07-25 00:32:27.934667",
+    "description": "Tarefas de backend",
+    "id": 1,
+    "name": "Backend",
+    "task_count": 6
+  },
+  {
+    "color": "#2ecc71",
+    "created_at": "2026-07-25 00:32:27.934671",
+    "description": "Tarefas de frontend",
+    "id": 2,
+    "name": "Frontend",
+    "task_count": 1
+  },
+  {
+    "color": "#e74c3c",
+    "created_at": "2026-07-25 00:32:27.934672",
+    "description": "Tarefas de infraestrutura",
+    "id": 3,
+    "name": "DevOps",
+    "task_count": 2
+  },
+  {
+    "color": "#e67e22",
+    "created_at": "2026-07-25 00:32:27.934673",
+    "description": "Corre\u00e7\u00e3o de bugs",
+    "id": 4,
+    "name": "Bug",
+    "task_count": 1
+  }
+]
+
+
+### PUT /categories/1 (sem corpo JSON)
+HTTP 500
+<!doctype html>
+<html lang=en>
+  <head>
+    <title>TypeError: argument of type &#39;NoneType&#39; is not iterable
+ // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css">
+    <link rel="shortcut icon"
+        href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script>
+      var CONSOLE_MODE = false,
+          EVALEX = true,
+          EVALEX_TRUSTED = false,
+          SECRET = "z5iq5OWZNND2i9VV4obn";
+    </script>
+  </head>
+  <body style="background-color: #fff">
+    <div class="debugger">
+<h1>TypeError</h1>
+<div class="detail">
+  <p class="errormsg">TypeError: argument of type &#39;NoneType&#39; is not iterable
+</p>
+</div>
+<h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
+<div class="traceback">
+  <h3></h3>
+  <ul><li><div class="frame" id="frame-127493848077584">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1478</em>,
+      in <code class="function">__call__</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">    </span>def __call__(self, environ: dict, start_response: t.Callable) -&gt; t.Any:</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;The WSGI server calls the Flask application object as the</pre>
+<pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app`, which can be</pre>
+<pre class="line before"><span class="ws">        </span>wrapped to apply middleware.</pre>
+<pre class="line before"><span class="ws">        </span>&#34;&#34;&#34;</pre>
+<pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848077728">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1458</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+<pre class="line before"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line before"><span class="ws">                </span>error = e</pre>
+<pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre>
+<pre class="line after"><span class="ws">                </span>raise</pre>
+<pre class="line after"><span class="ws">            </span>return response(environ, start_response)</pre>
+<pre class="line after"><span class="ws">        </span>finally:</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848077872">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py"</cite>,
+      line <em class="line">176</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># Wrap exception handlers with cross_origin</pre>
+<pre class="line before"><span class="ws">        </span># These error handlers will still respect the behavior of the route</pre>
+<pre class="line before"><span class="ws">        </span>if options.get(&#39;intercept_exceptions&#39;, True):</pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f):</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args, **kwargs):</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app.make_response(f(*args, **kwargs)))
+<span class="ws">                    </span>                                            ^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if hasattr(app, &#39;handle_exception&#39;):</pre>
+<pre class="line after"><span class="ws">                </span>app.handle_exception = _after_request_decorator(</pre>
+<pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078016">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">1455</em>,
+      in <code class="function">wsgi_app</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span>ctx = self.request_context(environ)</pre>
+<pre class="line before"><span class="ws">        </span>error: BaseException | None = None</pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>try:</pre>
+<pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+<pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()
+<span class="ws">                </span>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">            </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">                </span>error = e</pre>
+<pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+<pre class="line after"><span class="ws">            </span>except:  # noqa: B001</pre>
+<pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078160">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">869</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line before"><span class="ws">                </span>rv = self.dispatch_request()</pre>
+<pre class="line before"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)
+<span class="ws">            </span>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre>
+<pre class="line after"><span class="ws">        </span>self,</pre>
+<pre class="line after"><span class="ws">        </span>rv: ft.ResponseReturnValue | HTTPException,</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078304">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py"</cite>,
+      line <em class="line">176</em>,
+      in <code class="function">wrapped_function</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">        </span># Wrap exception handlers with cross_origin</pre>
+<pre class="line before"><span class="ws">        </span># These error handlers will still respect the behavior of the route</pre>
+<pre class="line before"><span class="ws">        </span>if options.get(&#39;intercept_exceptions&#39;, True):</pre>
+<pre class="line before"><span class="ws">            </span>def _after_request_decorator(f):</pre>
+<pre class="line before"><span class="ws">                </span>def wrapped_function(*args, **kwargs):</pre>
+<pre class="line current"><span class="ws">                    </span>return cors_after_request(app.make_response(f(*args, **kwargs)))
+<span class="ws">                    </span>                                            ^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">                </span>return wrapped_function</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">            </span>if hasattr(app, &#39;handle_exception&#39;):</pre>
+<pre class="line after"><span class="ws">                </span>app.handle_exception = _after_request_decorator(</pre>
+<pre class="line after"><span class="ws">                    </span>app.handle_exception)</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078448">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">867</em>,
+      in <code class="function">full_dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">        </span>try:</pre>
+<pre class="line before"><span class="ws">            </span>request_started.send(self, _async_wrapper=self.ensure_sync)</pre>
+<pre class="line before"><span class="ws">            </span>rv = self.preprocess_request()</pre>
+<pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+<pre class="line current"><span class="ws">                </span>rv = self.dispatch_request()
+<span class="ws">                </span>     ^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">        </span>except Exception as e:</pre>
+<pre class="line after"><span class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+<pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def finalize_request(</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078592">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py"</cite>,
+      line <em class="line">852</em>,
+      in <code class="function">dispatch_request</code></h4>
+  <div class="source library"><pre class="line before"><span class="ws">            </span>and req.method == &#34;OPTIONS&#34;</pre>
+<pre class="line before"><span class="ws">        </span>):</pre>
+<pre class="line before"><span class="ws">            </span>return self.make_default_options_response()</pre>
+<pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint</pre>
+<pre class="line before"><span class="ws">        </span>view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]</pre>
+<pre class="line current"><span class="ws">        </span>return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+<span class="ws">        </span>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws"></span> </pre>
+<pre class="line after"><span class="ws">    </span>def full_dispatch_request(self) -&gt; Response:</pre>
+<pre class="line after"><span class="ws">        </span>&#34;&#34;&#34;Dispatches the request and on top of that performs request</pre>
+<pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and</pre>
+<pre class="line after"><span class="ws">        </span>error handling.</pre></div>
+</div>
+
+<li><div class="frame" id="frame-127493848078736">
+  <h4>File <cite class="filename">"/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/report_routes.py"</cite>,
+      line <em class="line">197</em>,
+      in <code class="function">update_category</code></h4>
+  <div class="source "><pre class="line before"><span class="ws">    </span>cat = Category.query.get(cat_id)</pre>
+<pre class="line before"><span class="ws">    </span>if not cat:</pre>
+<pre class="line before"><span class="ws">        </span>return jsonify({&#39;error&#39;: &#39;Categoria não encontrada&#39;}), 404</pre>
+<pre class="line before"><span class="ws"></span> </pre>
+<pre class="line before"><span class="ws">    </span>data = request.get_json()</pre>
+<pre class="line current"><span class="ws">    </span>if &#39;name&#39; in data:
+<span class="ws">    </span>   ^^^^^^^^^^^^^^</pre>
+<pre class="line after"><span class="ws">        </span>cat.name = data[&#39;name&#39;]</pre>
+<pre class="line after"><span class="ws">    </span>if &#39;description&#39; in data:</pre>
+<pre class="line after"><span class="ws">        </span>cat.description = data[&#39;description&#39;]</pre>
+<pre class="line after"><span class="ws">    </span>if &#39;color&#39; in data:</pre>
+<pre class="line after"><span class="ws">        </span>cat.color = data[&#39;color&#39;]</pre></div>
+</div>
+</ul>
+  <blockquote>TypeError: argument of type &#39;NoneType&#39; is not iterable
+</blockquote>
+</div>
+
+<div class="plain">
+    <p>
+      This is the Copy/Paste friendly version of the traceback.
+    </p>
+    <textarea cols="50" rows="10" name="code" readonly>Traceback (most recent call last):
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1478, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1458, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py&#34;, line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py&#34;, line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py&#34;, line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/report_routes.py&#34;, line 197, in update_category
+    if &#39;name&#39; in data:
+       ^^^^^^^^^^^^^^^
+TypeError: argument of type &#39;NoneType&#39; is not iterable
+</textarea>
+</div>
+<div class="explanation">
+  The debugger caught an exception in your WSGI application.  You can now
+  look at the traceback which led to the error.  <span class="nojavascript">
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.</span>
+</div>
+      <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+    </div>
+
+    <div class="pin-prompt">
+      <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+          The console is locked and needs to be unlocked by entering the PIN.
+          You can find the PIN printed out on the standard output of your
+          shell that runs the server.
+        <form>
+          <p>PIN:
+            <input type=text name=pin size=14>
+            <input type=submit name=btn value="Confirm Pin">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!--
+
+Traceback (most recent call last):
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1478, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1458, in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/venv/lib64/python3.12/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/users/mrgen/OneDrive - SEBRAE/___Cerebro/___Projetos/MBA Engenharia de software com IA/__Desafios/refactor/mba-ia-refactor-projects-skill/task-manager-api/routes/report_routes.py", line 197, in update_category
+    if 'name' in data:
+       ^^^^^^^^^^^^^^^
+TypeError: argument of type 'NoneType' is not iterable
+
+
+-->
+
+
+### POST /tasks (happy path)
+HTTP 201
+{
+  "category_id": 1,
+  "created_at": "2026-07-25 00:32:53.688871",
+  "description": "desc",
+  "due_date": null,
+  "id": 11,
+  "priority": 2,
+  "status": "pending",
+  "tags": [],
+  "title": "Nova Task Fixture",
+  "updated_at": "2026-07-25 00:32:53.688874",
+  "user_id": 1
+}
+
+
+### PUT /tasks/1 (atualizar status)
+HTTP 200
+{
+  "category_id": 1,
+  "created_at": "2026-07-25 00:32:27.972526",
+  "description": "Adicionar autentica\u00e7\u00e3o real com JWT",
+  "due_date": "2026-07-22 00:32:27.961762",
+  "id": 1,
+  "priority": 1,
+  "status": "done",
+  "tags": [],
+  "title": "Implementar autentica\u00e7\u00e3o JWT",
+  "updated_at": "2026-07-25 00:32:53.720627",
+  "user_id": 1
+}
+
+
+### DELETE /tasks/2
+HTTP 200
+{
+  "message": "Task deletada com sucesso"
+}
+
+
