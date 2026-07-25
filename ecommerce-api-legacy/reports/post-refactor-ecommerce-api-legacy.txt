@@ -1,0 +1,36 @@
+### POST /api/checkout (usuario existente, happy path)
+HTTP 200
+{"msg":"Sucesso","enrollment_id":2}
+
+### POST /api/checkout (novo usuario, sem pwd)
+HTTP 400
+Senha é obrigatória
+
+### POST /api/checkout (cartao recusado)
+HTTP 400
+Pagamento recusado
+
+### POST /api/checkout (curso inexistente)
+HTTP 404
+Curso não encontrado
+
+### POST /api/checkout (campo obrigatorio ausente)
+HTTP 400
+Bad Request
+
+### GET /api/admin/financial-report (antes do delete)
+HTTP 200
+[{"course":"Clean Architecture","revenue":1994,"students":[{"student":"Leonan","paid":997},{"student":"Leonan","paid":997}]},{"course":"Docker","revenue":0,"students":[]}]
+
+### DELETE /api/users/1 (usuario com matriculas/pagamentos)
+HTTP 200
+Usuário deletado com sucesso.
+
+### GET /api/admin/financial-report (depois do delete)
+HTTP 200
+[{"course":"Clean Architecture","revenue":0,"students":[]},{"course":"Docker","revenue":0,"students":[]}]
+
+### DELETE /api/users/999 (usuario inexistente)
+HTTP 200
+Usuário deletado com sucesso.
+
